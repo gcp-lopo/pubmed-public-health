@@ -1,0 +1,40 @@
+---
+layout: default
+title: PubMed公共卫生专业每日动态
+---
+
+<div class="container">
+  <header class="page-header">
+    <h1>PubMed公共卫生专业每日动态</h1>
+    <p>汇聚公共卫生领域最新研究成果与行业动态</p>
+  </header>
+  
+  <div class="date-stamp">
+    <span>更新时间: {{ site.articles.date | date: "%Y年%m月%d日 %H:%M" }}</span>
+  </div>
+  
+  <div class="news-list">
+    {% for article in site.articles.articles %}
+    <article class="news-item">
+      <h2 class="news-title">
+        <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+      </h2>
+      <div class="news-meta">
+        <span class="journal">{{ article.journal }}</span>
+        <span class="pub-date">{{ article.pubDate }}</span>
+      </div>
+      <div class="news-abstract">
+        <p>{{ article.abstract | truncate: 300, "..." }}</p>
+      </div>
+      <div class="read-more">
+        <a href="{{ article.link }}" target="_blank">阅读全文 <i class="fas fa-external-link-alt"></i></a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  
+  <footer class="page-footer">
+    <p>本网站聚合PubMed公共卫生相关文献，仅供学习参考</p>
+    <p>数据更新频率: 每日</p>
+  </footer>
+</div>
