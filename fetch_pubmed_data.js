@@ -134,8 +134,14 @@ const aggregateArticles = async () => {
   });
 };
 
-// 保存文章数据到文件
-const saveArticlesToFile = (articles) => {
+// 创建文章存档目录
+const ARCHIVE_DIR = path.join(__dirname, '_archives');
+if (!fs.existsSync(ARCHIVE_DIR)) {
+  fs.mkdirSync(ARCHIVE_DIR, { recursive: true });
+}
+
+// 保存文章数据到JSON文件
+const saveArticlesToJson = (articles) => {
   const dataDir = path.join(__dirname, '_data');
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
@@ -152,7 +158,50 @@ const saveArticlesToFile = (articles) => {
     'utf8'
   );
   
-  console.log(`成功保存 ${data.articles.length} 篇文章到 data/articles.json`);
+  console.log(`成功保存 ${data.articles.length} 篇文章到 _data/articles.json`);
+};
+
+// 将文章保存为Markdown文件存档
+const saveArticlesToMarkdown = (articles) => {
+  const today = new Date().toISOString().split('T')[0]; // 格式: YYYY-MM-DD
+  const mdPath = path.join(ARCHIVE_DIR, `${today}.md`);
+
+  // Markdown内容
+  let mdContent = `---
+layout: archive
+date: ${today}
+title: 公共卫生研究摘要 (${today})
+---
+
+# 公共卫生研究摘要 (${today})
+
+共收录 ${articles.length} 篇研究文章
+
+`;
+
+  // 添加每篇文章内容
+  articles.forEach((article, index) => {
+    mdContent += `## ${index + 1}. ${article.title}
+
+`;
+    mdContent += `**期刊**: ${article.journal}
+`;
+    mdContent += `**发表日期**: ${article.pubDate}
+`;
+    mdContent += `**链接**: [PubMed](${article.link})
+
+`;
+    mdContent += `### 摘要
+${article.abstract}
+
+---
+
+`;
+  });
+
+  // 保存文件
+  fs.writeFileSync(mdPath, mdContent, 'utf8');
+  console.log(`成功创建存档文件: ${mdPath}`);
 };
 
 // 主函数
@@ -165,7 +214,8 @@ const main = async () => {
       console.error('未获取到任何文章数据，请检查API密钥和网络连接');
       process.exit(1); // 非零退出码让GitHub Actions识别失败
     }
-    saveArticlesToFile(articles);
+    saveArticlesToJson(articles);
+    saveArticlesToMarkdown(articles);
     console.log('数据获取完成');
   } catch (error) {
     console.error(`处理过程中出错: ${error.message}`);
