@@ -1,0 +1,11 @@
+{
+  "date": "2023-10-01T00:00:00Z",
+  "articles": [
+    {
+      "id": "12345678",
+      "title": "公共卫生最新研究",
+      "abstract": "这是一篇关于...",
+      "link": "https://pubmed.ncbi.nlm.nih.gov/12345678"
+    }
+  ]
+}
