@@ -4,7 +4,19 @@ title: PubMed公共卫生专业每日动态
 ---
 
 {% include header.html %}
-<div class="container">
+<div class="page-container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>文章导航</h2>
+      <div class="tech-divider"></div>
+    </div>
+    <nav class="article-nav">
+      {% for article in site.data.articles.articles %}
+        <a href="#article-{{ forloop.index }}" class="nav-item">{{ article.title }}</a>
+      {% endfor %}
+    </nav>
+  </aside>
+  <main class="container">
   <header class="page-header">
     <h1>PubMed公共卫生专业每日动态</h1>
     <p>汇聚公共卫生领域最新研究成果与行业动态</p>
@@ -16,7 +28,7 @@ title: PubMed公共卫生专业每日动态
   
   <div class="news-list">
     {% for article in site.data.articles.articles %}
-    <article class="news-item">
+    <article id="article-{{ forloop.index }}" class="news-item tech-card">
       <h2 class="news-title">
         <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
       </h2>
