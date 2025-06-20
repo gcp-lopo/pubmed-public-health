@@ -1,0 +1,35 @@
+name: 自动获取PubMed数据并更新网站
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天午夜执行
+  workflow_dispatch:
+
+jobs:
+  fetch-pubmed-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 克隆仓库
+      uses: actions/checkout@v3
+      
+    - name: 安装Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        
+    - name: 安装依赖
+      run: npm install axios
+      
+    - name: 获取PubMed数据
+      env:
+        PUBMED_API_KEY: ${{ secrets.PUBMED_API_KEY }}  # 可选的PubMed API密钥
+      run: node fetch_pubmed_data.js
+      
+    - name: 提交更新
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add .
+        git commit -m "自动更新PubMed数据: $(date)" || exit 0
+        git push
