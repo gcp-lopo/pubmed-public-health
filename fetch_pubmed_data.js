@@ -112,7 +112,7 @@ const aggregateArticles = async () => {
 
 // 保存文章数据到文件
 const saveArticlesToFile = (articles) => {
-  const dataDir = path.join(__dirname, '_data');
+  const dataDir = path.join(__dirname, 'data');
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
@@ -128,7 +128,7 @@ const saveArticlesToFile = (articles) => {
     'utf8'
   );
   
-  console.log(`成功保存 ${data.articles.length} 篇文章到 _data/articles.json`);
+  console.log(`成功保存 ${data.articles.length} 篇文章到 data/articles.json`);
 };
 
 // 主函数

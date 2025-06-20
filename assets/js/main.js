@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 示例：从本地JSON获取数据并渲染
   async function renderArticles() {
     try {
-      const response = await fetch('../data/articles.json');
+      const response = await fetch('/data/articles.json');
       const data = await response.json();
       
       const newsList = document.querySelector('.news-list');
