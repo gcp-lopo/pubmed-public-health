@@ -24,7 +24,7 @@ title: PubMed公共卫生专业每日动态
         <span class="pub-date">{{ article.pubDate }}</span>
       </div>
       <div class="news-abstract">
-        <p>{{ article.abstract | truncate: 300, "..." }}</p>
+        <p>{{ article.abstract }}</p>
       </div>
       <div class="read-more">
         <a href="{{ article.link }}" target="_blank">阅读全文 <i class="fas fa-external-link-alt"></i></a>

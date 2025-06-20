@@ -19,7 +19,7 @@ jobs:
         node-version: '16'
         
     - name: 安装依赖
-      run: npm install axios
+  run: npm install
       
     - name: 获取PubMed数据
       env:

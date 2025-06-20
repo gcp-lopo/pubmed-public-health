@@ -1,6 +1,7 @@
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
+const { DOMParser } = require('xmldom');
 
 // PubMed API配置
 const PUBMED_API_BASE = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
@@ -29,13 +30,53 @@ const buildSearchUrl = (query, page = 0) => {
          (API_KEY ? `api_key=${API_KEY}` : '');
 };
 
-// 获取文章摘要
-const buildSummaryUrl = (ids) => {
-  return `${PUBMED_API_BASE}/esummary.fcgi?` +
+// 获取文章详细内容
+const buildFetchUrl = (ids) => {
+  return `${PUBMED_API_BASE}/efetch.fcgi?` +
          `db=pubmed&` +
          `id=${ids.join(',')}&` +
-         `retmode=json&` +
+         `retmode=xml&` +
+         `rettype=abstract&` +
          (API_KEY ? `api_key=${API_KEY}` : '');
+};
+
+// 解析XML格式的文章内容
+const parseArticleXml = (xml) => {
+  const articles = [];
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xml, 'text/xml');
+  const pubmedArticles = doc.getElementsByTagName('PubmedArticle');
+
+  for (let i = 0; i < pubmedArticles.length; i++) {
+    const article = pubmedArticles[i];
+    const medlineCitation = article.getElementsByTagName('MedlineCitation')[0];
+    const pmid = medlineCitation?.getElementsByTagName('PMID')[0]?.textContent || '';
+    const articleTitle = medlineCitation?.getElementsByTagName('ArticleTitle')[0]?.textContent || '';
+    
+    // 提取完整摘要文本
+    const abstractTextNodes = medlineCitation.getElementsByTagName('AbstractText');
+    let abstract = '';
+    for (let j = 0; j < abstractTextNodes.length; j++) {
+      abstract += abstractTextNodes[j].textContent + '\n';
+    }
+    
+    const journalTitle = medlineCitation?.getElementsByTagName('Title')[0]?.textContent || '';
+    const pubDate = medlineCitation?.getElementsByTagName('PubDate')[0];
+    const year = pubDate?.getElementsByTagName('Year')[0]?.textContent || '';
+    const month = pubDate?.getElementsByTagName('Month')[0]?.textContent || '';
+    const day = pubDate?.getElementsByTagName('Day')[0]?.textContent || '';
+    const pubDateStr = `${year}-${month || ''}-${day || ''}`.replace(/-$/, '');
+
+    articles.push({
+      id: pmid,
+      title: articleTitle,
+      abstract: abstract.trim(),
+      journal: journalTitle,
+      pubDate: pubDateStr,
+      link: `https://pubmed.ncbi.nlm.nih.gov/${pmid}`
+    });
+  }
+  return articles;
 };
 
 // 搜索PubMed
@@ -49,16 +90,16 @@ const searchPubMed = async (query) => {
   }
 };
 
-// 获取文章摘要
-const getArticleSummaries = async (ids) => {
+// 获取文章详细内容
+const getArticleDetails = async (ids) => {
   if (ids.length === 0) return [];
   
   try {
-    const response = await axios.get(buildSummaryUrl(ids));
-    return response.data.result || {};
+    const response = await axios.get(buildFetchUrl(ids));
+    return parseArticleXml(response.data);
   } catch (error) {
-    console.error(`获取文章摘要时出错: ${error.message}`);
-    return {};
+    console.error(`获取文章内容时出错: ${error.message}`);
+    return [];
   }
 };
 
@@ -70,24 +111,7 @@ const processSearchResults = async (query) => {
   const ids = searchResults.esearchresult.idlist || [];
   if (ids.length === 0) return [];
   
-  const summaries = await getArticleSummaries(ids);
-  const articles = [];
-  
-  ids.forEach(id => {
-    const summary = summaries[id];
-    if (summary) {
-      articles.push({
-        id: summary.id,
-        title: summary.title,
-        abstract: summary.abstract || '',
-        journal: summary.jrnl || '',
-        pubDate: summary.pubdate || '',
-        link: `https://pubmed.ncbi.nlm.nih.gov/${id}`
-      });
-    }
-  });
-  
-  return articles;
+  return await getArticleDetails(ids);
 };
 
 // 聚合所有搜索词的结果
@@ -112,7 +136,7 @@ const aggregateArticles = async () => {
 
 // 保存文章数据到文件
 const saveArticlesToFile = (articles) => {
-  const dataDir = path.join(__dirname, 'data');
+  const dataDir = path.join(__dirname, '_data');
   if (!fs.existsSync(dataDir)) {
     fs.mkdirSync(dataDir, { recursive: true });
   }
@@ -132,14 +156,20 @@ const saveArticlesToFile = (articles) => {
 };
 
 // 主函数
+// 在main函数中添加更严格的错误处理
 const main = async () => {
   console.log('开始获取PubMed公共卫生动态...');
   try {
     const articles = await aggregateArticles();
+    if (articles.length === 0) {
+      console.error('未获取到任何文章数据，请检查API密钥和网络连接');
+      process.exit(1); // 非零退出码让GitHub Actions识别失败
+    }
     saveArticlesToFile(articles);
     console.log('数据获取完成');
   } catch (error) {
     console.error(`处理过程中出错: ${error.message}`);
+    process.exit(1); // 确保错误时工作流失败
   }
 };
 
