@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 # Jekyll配置
 title: PubMed公共卫生专业每日动态
 description: 汇聚公共卫生领域最新研究成果与行业动态
 
 # 自定义变量
 articles:
-=======
-# Jekyll配置
-title: PubMed公共卫生专业每日动态
-description: 汇聚公共卫生领域最新研究成果与行业动态
-
-# 自定义变量
-articles:
->>>>>>> 611da0cd74e363c889b78201ba1405f298df9b3d
-  date: {{ 'now' | date: "%Y-%m-%dT%H:%M:%SZ" }}
 
 # Build settings
 markdown: kramdown
