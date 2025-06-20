@@ -10,11 +10,11 @@ title: PubMed公共卫生专业每日动态
   </header>
   
   <div class="date-stamp">
-    <span>更新时间: {{ site.articles.date | date: "%Y年%m月%d日 %H:%M" }}</span>
+    <span>更新时间: {{ site.data.articles.date | date: "%Y年%m月%d日 %H:%M" }}</span>
   </div>
   
   <div class="news-list">
-    {% for article in site.articles.articles %}
+    {% for article in site.data.articles.articles %}
     <article class="news-item">
       <h2 class="news-title">
         <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
