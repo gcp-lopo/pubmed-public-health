@@ -8,8 +8,9 @@ permalink: /archives/
   <h1>历史文章摘要存档</h1>
   <p>以下是每日公共卫生研究文章摘要的存档记录：</p>
 
+  {% assign archives_collection = site.collections | where: "label", "archives" | first %}
   <ul class="archive-list">
-    {% for archive in site.archives %}
+    {% for archive in archives_collection.docs %}
       <li>
         <a href="{{ archive.url | relative_url }}" class="archive-link">
             <span class="archive-date">{{ archive.date | date: "%Y年%m月%d日" }}</span>
