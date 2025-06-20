@@ -1,0 +1,7 @@
+# Jekyll配置
+title: PubMed公共卫生专业每日动态
+description: 汇聚公共卫生领域最新研究成果与行业动态
+
+# 自定义变量
+articles:
+  date: {{ 'now' | date: "%Y-%m-%dT%H:%M:%SZ" }}
