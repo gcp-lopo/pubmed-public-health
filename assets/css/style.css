@@ -37,6 +37,17 @@ nav {
   box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
 }
 
+.site-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-right: 2rem;
+  background: linear-gradient(90deg, #3498db, #1dd1a1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
+}
+
 /* 侧边栏样式 */
 .page-container {
   display: flex;
