@@ -11,7 +11,7 @@ permalink: /archives/
   <ul class="archive-list">
     {% for archive in site.archives %}
       <li>
-        <a href="{{ archive.url }}" class="archive-link">
+        <a href="{{ archive.url | relative_url }}" class="archive-link">
           {{ archive.date | date: "%Y年%m月%d日" }} - {{ archive.title }}
         </a>
       </li>

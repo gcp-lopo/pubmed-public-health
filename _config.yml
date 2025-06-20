@@ -1,11 +1,14 @@
 # Jekyll配置
 title: PubMed公共卫生专业每日动态
 description: 汇聚公共卫生领域最新研究成果与行业动态
+url: "https://luob.github.io"
+baseurl: "/pubmed-public-health"
 
 # 自定义变量
 articles:
 
 # Build settings
+future: true
 markdown: kramdown
 
 # 历史文章存档集合
