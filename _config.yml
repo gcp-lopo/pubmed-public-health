@@ -12,13 +12,12 @@ future: true
 markdown: kramdown
 
 # 历史文章存档集合
-future: true
 collections:
   archives:
     output: true
     sort_by: date
     reverse: true
-    permalink: /archives/:path/
+    permalink: /archives/:name/
     path: _archives
     defaults:
       - scope:
