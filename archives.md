@@ -10,8 +10,8 @@ permalink: /archives/
       <p>本存档按日期自动整理每日抓取的公共卫生领域研究文章，最新内容展示在前</p>
       <p>当前共收录 {{ archives.size }} 天的研究摘要</p>
     </div>
-  {% assign archives = site.archives | sort: 'date' | reverse %}
-  {% assign grouped_archives = archives | group_by_exp: 'item', 'item.date | date: "%Y-%m-%d"' %}
+  {% assign archives = site.collections.archives.docs | sort: 'date' | reverse %}
+  {% assign grouped_archives = archives | where_exp: 'item', 'item.path contains "/_archives/"' | group_by_exp: 'item', 'item.date | date: "%Y-%m-%d"' %}
   <ul class="archive-list">
     {% for archive in archives %}
       <li>

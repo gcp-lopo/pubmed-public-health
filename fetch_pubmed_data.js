@@ -163,8 +163,9 @@ const saveArticlesToJson = (articles) => {
 
 // 将文章保存为Markdown文件存档
 const saveArticlesToMarkdown = (articles) => {
-  const today = new Date().toISOString().split('T')[0]; // 格式: YYYY-MM-DD
-  const mdPath = path.join(ARCHIVE_DIR, `${today}.md`);
+  const today = new Date();
+const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const mdPath = path.join(ARCHIVE_DIR, `${todayStr}.md`);
 
   // Markdown内容
   let mdContent = `---
