@@ -8,7 +8,7 @@ permalink: /archives/
   <h1>历史文章摘要存档</h1>
   <p>以下是每日公共卫生研究文章摘要的存档记录：</p>
   {% assign archives_collection = site.collections.archives %}
-  {% assign archives = archives_collection.docs %}
+  {% assign archives = site.archives | where_exp:'item','item.published != false' %}
   <p>调试信息: 集合存在={{ archives_collection != nil }}, 文档数量={{ archives.size }}, 文档标题={{ archives | map: 'title' | join: ', ' }}, 集合配置={{ archives_collection | inspect }}</p>
   <ul class="archive-list">
     {% for archive in archives %}

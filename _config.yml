@@ -16,4 +16,6 @@ future: true
 collections:
   archives:
     output: true
+    sort_by: date
+    reverse: true
     permalink: /archives/:name/
