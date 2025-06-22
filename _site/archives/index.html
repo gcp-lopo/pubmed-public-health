@@ -1,22 +1,9 @@
----
-layout: default
-title: 历史文章摘要存档
-permalink: /archives/
----
-
 <div class="archives-index">
   <h1>历史文章摘要存档</h1>
   <p>以下是每日公共卫生研究文章摘要的存档记录：</p>
-  <p>调试信息: 存档集合={{ site.archives | inspect }}, 文档数量={{ site.archives.docs.size }}, 文档内容={{ site.archives.docs | inspect }}</p>
+  <p>调试信息: 存档集合=[#&lt;Jekyll::Document _archives/2025-06-20.md collection=archives&gt;], 文档数量=, 文档内容=nil</p>
   <ul class="archive-list">
-    {% for archive in site.archives.docs %}
-      <li>
-        <a href="{{ archive.url | relative_url }}" class="archive-link">
-            <span class="archive-date">{{ archive.date | date: "%Y年%m月%d日" }}</span>
-            <span class="archive-title">{{ archive.title }}</span>
-          </a>
-      </li>
-    {% endfor %}
+    
   </ul>
 </div>
 
@@ -199,3 +186,4 @@ body {
   text-decoration: none;
 }
 </style>
+
