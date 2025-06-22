@@ -18,4 +18,10 @@ collections:
     output: true
     sort_by: date
     reverse: true
-    permalink: /archives/:name/
+    permalink: /archives/:path/
+    defaults:
+      - scope:
+          path: "_archives"
+          type: "archives"
+        values:
+          layout: "archive"
