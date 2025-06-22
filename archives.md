@@ -6,16 +6,14 @@ permalink: /archives/
 
 <div class="archives-index">
   <h1>历史文章摘要存档</h1>
+{% assign temp_archives = [] %}
 {% if site.collections %}
-  {% if site.collections.archives %}
-    {% assign temp_archives = site.collections.archives.docs | default: [] %}
-  {% else %}
-    {% assign temp_archives = [] %}
+  {% assign archives_collection = site.collections | where: 'label', 'archives' | first %}
+  {% if archives_collection and archives_collection.docs %}
+    {% assign temp_archives = archives_collection.docs %}
   {% endif %}
-{% else %}
-  {% assign temp_archives = [] %}
 {% endif %}
-{% assign archives = temp_archives | sort: 'date' | reverse %}
+{% assign archives = temp_archives | default: [] | sort: 'date' | reverse %}
 
   <div class="archive-description">
       <p>本存档按日期自动整理每日抓取的公共卫生领域研究文章，最新内容展示在前</p>
