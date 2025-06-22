@@ -7,9 +7,11 @@ permalink: /archives/
 <div class="archives-index">
   <h1>历史文章摘要存档</h1>
   <p>以下是每日公共卫生研究文章摘要的存档记录：</p>
-  <p>调试信息: 存档集合={{ site.archives | inspect }}, 文档数量={{ site.archives.docs.size }}, 文档内容={{ site.archives.docs | inspect }}</p>
+  {% assign archives_collection = site.collections.archives %}
+  {% assign archives = archives_collection.docs %}
+  <p>调试信息: 集合存在={{ archives_collection != nil }}, 文档数量={{ archives.size }}, 文档标题={{ archives | map: 'title' | join: ', ' }}, 集合配置={{ archives_collection | inspect }}</p>
   <ul class="archive-list">
-    {% for archive in site.archives.docs %}
+    {% for archive in archives %}
       <li>
         <a href="{{ archive.url | relative_url }}" class="archive-link">
             <span class="archive-date">{{ archive.date | date: "%Y年%m月%d日" }}</span>

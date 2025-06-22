@@ -12,6 +12,7 @@ future: true
 markdown: kramdown
 
 # 历史文章存档集合
+future: true
 collections:
   archives:
     output: true
