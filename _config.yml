@@ -19,6 +19,7 @@ collections:
     sort_by: date
     reverse: true
     permalink: /archives/:path/
+    path: _archives
     defaults:
       - scope:
           path: "_archives"
