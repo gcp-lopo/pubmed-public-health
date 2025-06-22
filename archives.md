@@ -6,10 +6,12 @@ permalink: /archives/
 
 <div class="archives-index">
   <h1>历史文章摘要存档</h1>
-  <p>以下是每日公共卫生研究文章摘要的存档记录：</p>
-  {% assign archives_collection = site.collections.archives %}
-  {% assign archives = site.archives | where_exp:'item','item.published != false' %}
-  <p>调试信息: 集合存在={{ archives_collection != nil }}, 文档数量={{ archives.size }}, 文档标题={{ archives | map: 'title' | join: ', ' }}, 集合配置={{ archives_collection | inspect }}</p>
+  <div class="archive-description">
+      <p>本存档按日期自动整理每日抓取的公共卫生领域研究文章，最新内容展示在前</p>
+      <p>当前共收录 {{ archives.size }} 天的研究摘要</p>
+    </div>
+  {% assign archives = site.archives | sort: 'date' | reverse %}
+  {% assign grouped_archives = archives | group_by_exp: 'item', 'item.date | date: "%Y-%m-%d"' %}
   <ul class="archive-list">
     {% for archive in archives %}
       <li>
